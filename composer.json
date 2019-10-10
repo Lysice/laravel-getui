@@ -1,0 +1,14 @@
+{
+    "name": "lysice/laravel-getui",
+    "description": "A getui package for laravel or lumen.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lysice",
+            "email": "snowist@126.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
