@@ -87,7 +87,7 @@ trait TemplateTrait
      */
     private function getTransmissionTemplate(array $data = [])
     {
-        $fields = ['transmission_type', 'content', 'title'];
+        $fields = ['transmission_type', 'content', 'title', 'custom_data', 'custom_fields'];
         $this->validateFields($fields, $data);
         $template = new IGtTransmissionTemplate();
         //应用appid
@@ -96,21 +96,21 @@ trait TemplateTrait
         $template->set_appkey($this->gt_appkey);
         //透传消息类型
         $template->set_transmissionType($data['transmission_type']);
-        //透传内容
-        $template->set_transmissionContent($data['content']);
-        //$template->set_duration(BEGINTIME,ENDTIME); //设置ANDROID客户端在此时间区间内展示消息
-        // iOS推送必要设置
-        $transContent = $data['content'];
+        $transContent = $data['custom_data'];
         if (isset($data['function'])) {
             $method = $data['function'];
             if (function_exists($method)) {
-                $transContent = $method($data['content']);
+                $transContent = $method($data['custom_data']);
             } else {
                 throw new \Exception('自定义消息加密函数' . $method . '不存在!');
             }
         }
+        //透传内容
+        $template->set_transmissionContent($transContent);
+        //$template->set_duration(BEGINTIME,ENDTIME); //设置ANDROID客户端在此时间区间内展示消息
 
-        $apn = $this->setIOSPushInfo($data['content'], $data['title'], $transContent);
+        // iOS推送必要设置
+        $apn = $this->setIOSPushInfo($data['content'], $data['title'], $transContent, $data['custom_fields'], $data['custom_data']);
         $template->set_apnInfo($apn);
 
         return $template;
@@ -182,9 +182,12 @@ trait TemplateTrait
      * @param string $content
      * @param string $title
      * @param string $transContent
+     * @param array $customFields
+     * @param array $customData
      * @return IGtAPNPayload
+     * @throws \Exception
      */
-    private function setIOSPushInfo($content = '', $title = '', $transContent = '')
+    private function setIOSPushInfo($content = '', $title = '', $transContent = '', $customFields = [], $customData = [])
     {
         //APN高级推送
         $apn = new \IGtAPNPayload();
@@ -204,6 +207,13 @@ trait TemplateTrait
         $apn->sound = "";
 
         $apn->add_customMsg("payload", $transContent);
+        // APN透传消息添加自定义字段
+        foreach ($customFields as $customField) {
+            if (is_null($customData[$customField])) {
+                throw new \Exception('APN透传字段' . $customField . '为空');
+            }
+            $apn->add_customMsg($customField, $customData[$customField]);
+        }
         $apn->contentAvailable = 1;
         $apn->category = "ACTIONABLE";
         return $apn;

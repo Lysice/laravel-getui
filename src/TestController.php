@@ -35,19 +35,35 @@ class TestController extends Controller
      */
     private function transmissionCustom()
     {
-        // 自定义数据
-        $content = [
+        $content = '自定义消息文本1243';
+        $custom = [
             'keyId' => 1,
-            'keyType' => 111199
+            'keyType' => 111199,
+            'msg' => $content
         ];
         $data = [
-            'title' => '自定义消息iOS',
-            'network_type' => 0,
+            'title' => '自定义消息标题-122',
             'transmission_type' => 2,
-//            'client_id' => '249c93193d9a0734dcb62a7029b383cf',
-            'client_id' => 'c3024643a24c11bd3762d437c9103a42',
-            'content' => json_encode($content) // 自定义数据加密 接收端需要按照同样方式解密
+            'function' => 'json_encode',
+            'content' => $content,
+            'custom_data' => $custom,
+            'custom_fields' => [
+                'keyId', 'keyType'
+            ]
         ];
+//        // 自定义数据
+//        $content = [
+//            'keyId' => 1,
+//            'keyType' => 111199
+//        ];
+//        $data = [
+//            'title' => '自定义消息iOS',
+//            'network_type' => 0,
+//            'transmission_type' => 2,
+////            'client_id' => '249c93193d9a0734dcb62a7029b383cf',
+//            'client_id' => 'c3024643a24c11bd3762d437c9103a42',
+//            'content' => json_encode($content) // 自定义数据加密 接收端需要按照同样方式解密
+//        ];
 
         Getui::pushToSingle('transmission', $data);
         Getui::pushToApp('transmission', $data);
