@@ -9,6 +9,12 @@
             "email": "snowist@126.com"
         }
     ],
+    "autoload": {
+        "psr-4": {"Lysice\\Getui\\": "src"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Lysice\\Getui\\": "src"}
+    },
     "minimum-stability": "dev",
     "require": {}
 }
