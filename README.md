@@ -168,15 +168,22 @@ providers 数组中添加:
 #### 4 自定义消息
 ##### 4-1 全量推送-自定义消息-透传模板
 
-		// 自定义数据
-        $content = [
+	// 自定义数据
+        $content = '自定义消息文本1243';
+        $custom = [
             'keyId' => 1,
-            'keyType' => 111199
+            'keyType' => 111199,
+            'msg' => $content
         ];
-		$data = [
-            'title' => '自定义消息iOS',
+        $data = [
+            'title' => '自定义消息标题-122',
             'transmission_type' => 2,
-            'content' => json_encode($content) // 自定义数据加密 接收端需要按照同样方式解密
+            'function' => 'json_encode',
+            'content' => $content,
+            'custom_data' => $custom,
+            'custom_fields' => [
+                'keyId', 'keyType'
+            ]
         ];
         
         Getui::pushToApp('transmission', $data);
