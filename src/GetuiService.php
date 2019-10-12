@@ -48,7 +48,10 @@ class GetuiService
     public function __construct(array $config = null)
     {
         if (empty($config)) {
-            throw new Exception('请传入推送配置');
+            $config = include(__DIR__) . '/config/getui.php';
+            if (empty($config)) {
+                throw new Exception('请先配置推送后使用');
+            }
         }
 
         $this->gt_appid = $config['appid'];

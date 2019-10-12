@@ -14,13 +14,6 @@ class GetuiServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if (!function_exists('config_path')) {
-            function config_path()
-            {
-                return app()->basePath('config');
-            }
-        }
-
         $source = realpath(__DIR__.'/config/getui.php');
         if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
             $this->publishes([$source => config_path('getui.php')]);
@@ -36,8 +29,8 @@ class GetuiServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GetuiService::class, function () {
-            return new GetuiService(config('getui.test'));
+        $this->app->singleton(GetuiService::class, function ($app) {
+            return new GetuiService($app->config->get('getui', []));
         });
     }
 }
