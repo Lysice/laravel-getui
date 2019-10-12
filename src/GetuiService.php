@@ -42,17 +42,19 @@ class GetuiService
 
     /**
      * GetuiService constructor.
-     * @param array|null $config
+     * @param array|null $configAll
      * @throws Exception
      */
-    public function __construct(array $config = null)
+    public function __construct(array $configAll = null)
     {
-        if (empty($config)) {
-            $config = include(__DIR__) . '/config/getui.php';
-            if (empty($config)) {
+        if (empty($configAll)) {
+            $configAll = include(__DIR__) . '/config/getui.php';
+            if (empty($configAll)) {
                 throw new Exception('请先配置推送后使用');
             }
         }
+
+        $config = $configAll[$configAll['client_key']];
 
         $this->gt_appid = $config['appid'];
         $this->gt_appkey = $config['appkey'];
