@@ -29,6 +29,9 @@ use RequestException;
 use IGtAppMessage;
 use IGtListMessage;
 
+/**
+ * GetuiService
+ */
 class GetuiService
 {
     use TemplateTrait, ValidateTrait;
