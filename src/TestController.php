@@ -49,7 +49,8 @@ class TestController extends Controller
             'custom_data' => $custom,
             'custom_fields' => [
                 'keyId', 'keyType'
-            ]
+            ],
+            'speed' => 10 // 此处表示推送时设置定速推送且 100条/秒
         ];
 //        // 自定义数据
 //        $content = [
