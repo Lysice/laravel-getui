@@ -71,12 +71,12 @@ class GetuiService
      * 推送效果设置分为通知样式设置和后续操作设置
      * 通知样式:响铃 震动 通知是否可清除
      * 后续操作:打开应用首页 打开应用内指定页面 打开浏览器指定网页
-     * @param int $type
+     * @param string $type
      * @param array $data
      * @return mixed
      * @throws Exception
      */
-    private function getTemplate(string $type = '', array $data = [])
+    private function getTemplate(string $type = NULL, array $data = [])
     {
         return $this->getTemplateByType($type, $data);
     }
@@ -155,7 +155,7 @@ class GetuiService
      * @return bool
      * @throws Exception
      */
-    public function pushToList(string $type = '', array $data = [])
+    public function pushToList(string $type = NULL, array $data = [])
     {
         $fields = ['client_id_list', 'network_type'];
         $this->validateFields($fields, $data);
@@ -204,16 +204,20 @@ class GetuiService
      * 推送给APP done
      * @param string $type
      * @param array $data
-     * @return mixed
+     * @return mixed|null
      * @throws Exception
      */
-    public function pushToApp(string $type = '', array $data = [])
+    public function pushToApp(string $type = NULL, array $data = [])
     {
         // 消息模板
         $template = $this->getTemplate($type, $data);
 
         // 定义"AppMessage"类型消息对象，设置消息内容模板、发送的目标App列表、是否支持离线发送、以及离线消息有效期(单位毫秒)
         $message = new IGtAppMessage();
+        // 定速推送
+        if (isset($data['speed'])) {
+            $message->set_speed($data['speed']);
+        }
         $message->set_isOffline(true);
         $message->set_offlineExpireTime(10 * 60 * 1000);//离线时间单位为毫秒，例，两个小时离线为3600*1000*2
         $message->set_data($template);
