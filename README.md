@@ -183,7 +183,8 @@ providers 数组中添加:
             'custom_data' => $custom,
             'custom_fields' => [
                 'keyId', 'keyType'
-            ]
+            ],
+            'speed' => 100, // 可选参数:定速推送 若设置100，则个推控制下发速度在100条/秒左右 默认无表示不定速.
         ];
         
         Getui::pushToApp('transmission', $data);
