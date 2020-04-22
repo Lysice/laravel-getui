@@ -121,10 +121,10 @@ trait TemplateTrait
             $notify = new IGtNotify();
             if ($notifyParams['notify_type'] == 'intent') {
                 $notify->set_type(\NotifyInfo_Type::_intent);
-                $notify->set_intent($data['notify_intent']);
+                $notify->set_intent($notifyParams['notify_intent']);
             } else if ($notifyParams['notify_type'] == 'url') {
                 $notify->set_type(\NotifyInfo_Type::_url);
-                $notify->set_url($data['notify_url']);
+                $notify->set_url($notifyParams['notify_url']);
             } else {
                 throw new \Exception("透传--通知类型不正确!请传入intent/url中的一种!");
             }
