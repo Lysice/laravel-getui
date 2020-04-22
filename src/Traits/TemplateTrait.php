@@ -114,16 +114,19 @@ trait TemplateTrait
         $apn = $this->setIOSPushInfo($data['content'], $data['title'], $transContent, $data['custom_fields'], $data['custom_data']);
         $template->set_apnInfo($apn);
         // 透传对接通知
-        if (isset($data['is_notify']) && $data['is_notify']) {
+        if (isset($data['is_notify']) && $data['is_notify'] && !empty($data['notify_params'])) {
+            $notifyParams = $data['notify_params'];
             $fields = ['notify_type', 'notify_url', 'notify_intent'];
-            $this->validateFields($fields, $data);
+            $this->validateFields($fields, $notifyParams);
             $notify = new IGtNotify();
-            if ($data['notify_type'] == 'intent') {
+            if ($notifyParams['notify_type'] == 'intent') {
                 $notify->set_type(\NotifyInfo_Type::_intent);
                 $notify->set_intent($data['notify_intent']);
-            } else if ($data['notify_type'] == 'url') {
+            } else if ($notifyParams['notify_type'] == 'url') {
                 $notify->set_type(\NotifyInfo_Type::_url);
                 $notify->set_url($data['notify_url']);
+            } else {
+                throw new \Exception("透传--通知类型不正确!请传入intent/url中的一种!");
             }
             $template->set3rdNotifyInfo($notify);
         }
