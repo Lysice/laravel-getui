@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/../../getui/' . 'igetui/template/IGt.Transmis
 require_once(dirname(__FILE__) . '/../../getui/' . 'igetui/template/IGt.NotyPopLoadTemplate.php');
 require_once(dirname(__FILE__) . '/../../getui/' . 'igetui/template/notify/IGt.Notify.php');
 require_once(dirname(__FILE__) . '/../../getui/' . 'igetui/IGt.APNPayload.php');
-
+require_once(dirname(__FILE__) . '/../../getui/' . 'igetui/template/notify/IGt.Notify.php');
 use Lysice\Getui\Constants\TemplateConstants;
 use IGtRevokeTemplate;
 use IGtStartActivityTemplate;
@@ -19,6 +19,7 @@ use IGtNotificationTemplate;
 use IGtTransmissionTemplate;
 use IGtNotyPopLoadTemplate;
 use IGtAPNPayload;
+use IGtNotify;
 
 trait TemplateTrait
 {
@@ -29,7 +30,7 @@ trait TemplateTrait
      * @return mixed
      * @throws \Exception
      */
-    private function getTemplateByType(string $type = '', array $params = [])
+    private function getTemplateByType(string $type = null, array $params = [])
     {
         if (key_exists($type, TemplateConstants::TEMPLATE_TYPES)) {
             $method = TemplateConstants::TEMPLATE_TYPES[$type];
@@ -112,7 +113,20 @@ trait TemplateTrait
         // iOS推送必要设置
         $apn = $this->setIOSPushInfo($data['content'], $data['title'], $transContent, $data['custom_fields'], $data['custom_data']);
         $template->set_apnInfo($apn);
-
+        // 透传对接通知
+        if (isset($data['is_notify']) && $data['is_notify']) {
+            $fields = ['notify_type', 'notify_url', 'notify_intent'];
+            $this->validateFields($fields, $data);
+            $notify = new IGtNotify();
+            if ($data['notify_type'] == 'intent') {
+                $notify->set_type(\NotifyInfo_Type::_intent);
+                $notify->set_intent($data['notify_intent']);
+            } else if ($data['notify_type'] == 'url') {
+                $notify->set_type(\NotifyInfo_Type::_url);
+                $notify->set_url($data['notify_url']);
+            }
+            $template->set3rdNotifyInfo($notify);
+        }
         return $template;
     }
 
