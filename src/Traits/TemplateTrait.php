@@ -211,12 +211,12 @@ trait TemplateTrait
         $alertmsg = new \DictionaryAlertMsg();
         $alertmsg->body = $content;
         $alertmsg->actionLocKey = "ActionLockey";
-        $alertmsg->locKey = "LocKey";
+//        $alertmsg->locKey = "LocKey";
         $alertmsg->locArgs = array("locargs");
         $alertmsg->launchImage = "launchimage";
         // IOS8.2 支持
         $alertmsg->title = $title;
-        $alertmsg->titleLocKey = "TitleLocKey";
+//        $alertmsg->titleLocKey = "TitleLocKey";
         $alertmsg->titleLocArgs = array("TitleLocArg");
 
         $apn->alertMsg = $alertmsg;
