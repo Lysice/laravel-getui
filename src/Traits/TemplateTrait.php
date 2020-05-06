@@ -119,6 +119,8 @@ trait TemplateTrait
             $fields = ['notify_type', 'notify_url', 'notify_intent'];
             $this->validateFields($fields, $notifyParams);
             $notify = new IGtNotify();
+            $notify->set_title($data['title']);
+            $notify->set_content($data['content']);
             if ($notifyParams['notify_type'] == 'intent') {
                 $notify->set_type(\NotifyInfo_Type::_intent);
                 $notify->set_intent($notifyParams['notify_intent']);
