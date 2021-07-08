@@ -1,4 +1,8 @@
 # 欢迎使用 Laravel扩展包 laravel-getui
+[![Latest Stable Version](https://poser.pugx.org/Lysice/laravel-getui/v/stable)](https://packagist.org/packages/Lysice/laravel-getui)
+[![Total Downloads](https://poser.pugx.org/Lysice/laravel-getui/downloads)](https://packagist.org/packages/Lysice/laravel-getui)
+[![Latest Unstable Version](https://poser.pugx.org/Lysice/laravel-getui/v/unstable)](https://packagist.org/packages/Lysice/laravel-getui)
+[![License](https://poser.pugx.org/Lysice/laravel-getui/license)](https://packagist.org/packages/Lysice/laravel-getui)
 
 **网上有一款shaozeming/laravel-getui,自己在lumen下用，无奈报错依赖出问题，于是自己写了一款。**
 
